@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}Welcome!{% endblock %}</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+
+	<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-4">Symfony Blog</span>
+      </a>
+
+      <ul class="nav nav-pills">
+        {% if not app.user %}
+          <li class="nav-item"><a href="{{ path('home') }}" class="nav-link" aria-current="page">Home</a></li>
+  <!--         <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li> -->
+          <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Login</a></li>
+          <li class="nav-item"><a href="{{ path('register_page') }}" class="nav-link">Register</a></li>
+        {% endif %}
+
+        {% if app.user %}
+            <li class="nav-item"><a href="{{ path('add_post') }}" class="nav-link">Add Post</a></li>
+            <li class="nav-item"><a href="{{ path('profile', { id: app.user.getId }) }}" class="nav-link">Profile</a></li>
+            <li class="nav-item"><a href="{{ path('app_logout') }}"><button class="btn btn-danger">Logout</button></a></li>
+        {% endif %}
+      </ul>
+    </header>
+
+	<div class="container">
+
+
+    {% if app.user %}
+        <div class="mb-3 alert alert-success">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+		{% block body %}{% endblock %}
+		
+	</div>
+
+
+</body>
+</html>

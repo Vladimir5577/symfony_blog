@@ -1,0 +1,31 @@
+{% extends 'layouts/main_layouts.html.twig' %}
+
+{% block title %}Start Page{% endblock %}
+
+{% block body %}
+
+<h1>Home Page</h1>
+
+<h3>Welcome to our Symfony Blog.</h3>
+<h4>To add a blog you need to register</h4>
+
+{% for post in posts %}
+	<br>
+	<div class="row">
+		<div class="col-3">
+			<img src="{{ app.request.getSchemeAndHttpHost() ~ '/photo/uploads/' ~ post.image  }}" style="width: 100%;">
+		</div>
+
+		<div class="col-9">
+			<h2>{{ post.title }}</h2>
+			<p>{{ post.description }}</p>
+			<br>
+			<p>Wrotten by: <a href="{{ path('user_profile', {id: post.getUserId.getId}) }}">{{ post.getUserId.getName }}</a></p>
+		</div>
+	</div>
+	<br>
+{% endfor %}
+
+
+
+{% endblock %}

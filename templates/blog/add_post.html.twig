@@ -1,0 +1,48 @@
+{% extends 'layouts/main_layouts.html.twig' %}
+
+{% block title %}Edit profile{% endblock %}
+
+{% block body %}
+
+<h1>Add Post</h1>
+
+<form action="{{ path('save_post') }}" method="POST" enctype="multipart/form-data">
+
+    <img id="preimage" src="" height="120px" >
+
+    <div class="mb-3">
+        <label for="image_input" class="form-label">Photo</label>
+        <input type="file" name="image" class="form-control" id="image_input" aria-describedby="emailHelp"  onchange="loadfile(event)">
+    </div>
+    <div class="mb-3">
+        <label for="name_input" class="form-label">Title</label>
+        <input type="text" name="title" class="form-control" id="name_input" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+        <label for="phone_input" class="form-label">Description</label>
+        <textarea name="description" class="form-control" cols="30" rows="10"></textarea>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+{#
+    <div>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+#}
+
+<!-- image preview -->
+<script type="text/javascript">
+    function loadfile(event) {
+        var output=document.getElementById('preimage');
+        output.src=URL.createObjectURL(event.target.files[0]);
+    };
+</script>
+
+
+{% endblock %}

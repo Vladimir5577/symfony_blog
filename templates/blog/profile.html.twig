@@ -1,0 +1,38 @@
+{% extends 'layouts/main_layouts.html.twig' %}
+
+{% block title %}Start Page{% endblock %}
+
+{% block body %}
+
+<h1>{{ user.name }} profile</h1>
+
+<div class="row">
+	<div class="col-3">
+			{#	{{ dump(app.user.id) }}  #}
+			{#	{{ dump(user.id) }}  #}
+
+{#			{{ dump(app.request.getSchemeAndHttpHost()) }}#}
+{#			{{ dump(app.request.server.get('DOCUMENT_ROOT')) }}#}
+{#			{{ dump(app.request.server.get('DOCUMENT_ROOT') ~ '/photo/assets/ava_default.jpg') }}#}
+		{% if user.photo %}
+			<img src="{{ app.request.getSchemeAndHttpHost() ~ '/photo/uploads/' ~ user.photo  }}" style="width: 100%;">
+		{% else %}
+			<h4 style="color: red;">Please add your photo</h4>
+			<img src="{{ app.request.getSchemeAndHttpHost() ~ '/photo/assets/ava_default.jpg' }}" style="width: 100%;">
+		{% endif %}
+	</div>
+
+	<div class="col-9">
+		<h3>Name: {{ user.name }}</h3>
+		<h3>Phone: {{ user.phone }}</h3>
+		<h3>Email: {{ user.email }}</h3>
+
+		{% if app.user.id ==  user.id %}
+			<a href="{{ path('edit_profile') }}"><button type="button" class="btn btn-primary">Edit profile</button></a>
+		{% endif %}
+
+	</div>		
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'layouts/main_layouts.html.twig' %}
+
+{% block title %}Edit profile{% endblock %}
+
+{% block body %}
+
+<h1>Edit profile</h1>
+
+<form action="{{ path('update_profile') }}" method="POST" enctype="multipart/form-data">
+
+	{% if user.photo %}
+		<img src="{{ app.request.getSchemeAndHttpHost() ~ '/photo/uploads/' ~ user.photo  }}" id="preimage" height="120px">
+	{% else %}
+		<h4 style="color: red;">Please add your photo</h4>
+		<img src="{{ app.request.getSchemeAndHttpHost() ~ '/photo/assets/ava_default.jpg' }}" id="preimage" height="120px">
+	{% endif %}
+
+	<!-- Image preview -->
+	<!-- <img id="preimage" src="" height="120px" > -->
+
+	<div class="mb-3">
+		<label for="image_input" class="form-label">Photo</label>
+		<input type="file" name="image" class="form-control" id="image_input" aria-describedby="emailHelp"  onchange="loadfile(event)">
+	</div>
+	<div class="mb-3">
+		<label for="name_input" class="form-label">Name</label>
+		<input type="text" name="name" value="{{ user.name }}" class="form-control" id="name_input" aria-describedby="emailHelp">
+	</div>
+	<div class="mb-3">
+		<label for="phone_input" class="form-label">Phone</label>
+		<input type="text" name="phone" value="{{ user.phone }}" class="form-control" id="phone_input" aria-describedby="emailHelp">
+	</div>
+	<div class="mb-3">
+		<label for="exampleInputEmail1" class="form-label">Email address</label>
+		<input type="email" name="email" value="{{ user.email }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+		<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+	</div>
+	
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+{#
+	<div>
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+		{{ form_end(form) }}
+	</div>
+#}
+
+<!-- image preview -->
+  <script type="text/javascript">
+  	function loadfile(event) {
+  		var output=document.getElementById('preimage');
+  		output.src=URL.createObjectURL(event.target.files[0]);
+  	};
+  </script>
+
+
+{% endblock %}

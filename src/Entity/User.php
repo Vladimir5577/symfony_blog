@@ -23,47 +23,57 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable="false")
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
-     * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable="true")
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $phone;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $photo;
+    private ?string $phone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $photo;
 
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="user_id")
      */
-    private $posts;
+    private Collection $posts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="recipient")
+     */
+    private Collection $ratings;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="recipient")
+     */
+    private Collection $givenRatings;
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->user_giver = new ArrayCollection();
     }
 
     // validation
@@ -223,4 +233,54 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGivenRatings(): Collection
+    {
+       return $this->givenRatings;
+    }
+
+//    public function hasAssessedUser() : bool {
+//        foreach ($this->getGivenRatings() as $givenRating)
+//    }
+
+//    /**
+//     * @return Collection|Rating[]
+//     */
+//    public function getUserGiver(): Collection
+//    {
+//        return $this->user_giver;
+//    }
+
+//    public function addUserGiver(Rating $userGiver): self
+//    {
+//        if (!$this->user_giver->contains($userGiver)) {
+//            $this->user_giver[] = $userGiver;
+//            $userGiver->setUserGiverId($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeUserGiver(Rating $userGiver): self
+//    {
+//        if ($this->user_giver->removeElement($userGiver)) {
+//            // set the owning side to null (unless already changed)
+//            if ($userGiver->getUserGiverId() === $this) {
+//                $userGiver->setUserGiverId(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 }

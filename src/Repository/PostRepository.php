@@ -17,7 +17,9 @@ class PostRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
-    }
+    } 
+
+
 
     // /**
     //  * @return Post[] Returns an array of Post objects

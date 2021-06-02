@@ -1,0 +1,49 @@
+{% extends 'layouts/main_layouts.html.twig' %}
+
+{% block title %}Wiev blog{% endblock %}
+
+{% block body %}
+
+
+<div class="row">
+	<div class="col-3">
+		<img src="{{ app.request.getSchemeAndHttpHost() ~ '/photo/uploads/' ~ post.image  }}" style="width: 100%;">
+	</div>
+
+	<div class="col-9">
+		<h2>{{ post.title }}</h2>
+		<p>{{ post.description }}</p>
+		<br>
+		<p>Post wrotten by: <a href="{{ path('user_profile', {id: post.getUserId.getId}) }}">{{ post.getUserId.getName }}</a></p>
+
+	</div>
+
+		<h4>Comment section:</h4>
+
+{#		{{ dump(app.user.id) }}#}
+{#		{{ dump(post.getUserId.getId) }}#}
+
+		{% if app.user and app.user.id != post.getUserId.getId %}
+			<form action="{{ path('add_comment') }}" method="POST">
+				<input type="hidden" name="bloger_id" value="{{ post.getUserId.getId }}">
+				<input type="hidden" name="post_id" value="{{ post.id }}">
+				<div class="mb-3">
+					<label class="form-label">Add comment</label>
+					<input type="text" name="comment" class="form-control" id="comment_input" aria-describedby="emailHelp" ">
+				</div>
+				<button type="submit" class="btn btn-primary">Add comment</button>
+			</form>
+		{% endif %}
+
+
+		{% for comment in comments %}
+			<p>{{ comment.comment }}</p>
+			<p>Comment added by: <a href="{{ path('user_profile', {id: comment.getUserId.getId}) }}">{{ comment.getUserId.name }}</a></p>
+			<hr>
+		{% endfor %}
+</div>
+
+
+
+
+{% endblock %}

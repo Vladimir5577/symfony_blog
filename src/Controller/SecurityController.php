@@ -64,7 +64,9 @@ class SecurityController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->render('security/register.html.twig');
+//        dd($user);
+
+        return $this->render('security/register.html.twig', ['error' => null, 'last_username' => null]);
     }
 
     /**
@@ -72,8 +74,6 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // dd('Login Page');
-
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
@@ -92,14 +92,5 @@ class SecurityController extends AbstractController
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
-
-    /**
-     * @Route("/profile", name="profile")
-     */
-    public function profile(): Response
-    {
-        dd('bla');
-        return $this->render('security/register.html.twig');
     }
 }

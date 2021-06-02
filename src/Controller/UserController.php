@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use App\UseCases\User\Edit\Command;
-use App\UseCases\User\Edit\Form;
+use App\Repository\RatingRepository;
 use App\UseCases\User\Edit\Handler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,31 +23,78 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
 
-        return $this->render('blog/profile.html.twig', ['user' => $user]);
+        $array_rating = $user->getGivenRatings()->toArray();
+
+        $amount_rating = count($array_rating);
+        $rating_sum = 0;
+        array_map(function ($value) use (&$rating_sum, $array_rating) {
+            $rating_sum += $value->getRate();
+//            dump($value->getRate());
+        }, $array_rating);
+
+        if ($array_rating) {
+            $rating = $rating_sum / $amount_rating;
+        } else {
+            $rating = 0;
+        }
+
+        // dd($rating_sum, $amount_rating, $rating, 'Finish');
+
+
+        return $this->render('blog/profile.html.twig', ['user' => $user, 'rating' => $rating, 'amount_rating' => $amount_rating]);
     }
 
     /**
      * @Route("/user_profile/{id}", name="user_profile")
      */
-    public function user_profile(int $id): Response
+    public function user_profile(int $id, RatingRepository $ragingRepository): Response
     {
-        $auth_user_id = $this->getUser()->getId();
+        $auth_user_id = $this->getUser() ? $this->getUser()->getId() : null;
 
         if ($auth_user_id == $id) {
             $user = $this->getUser();
         } else {
+            /** @var $user User */
             $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);
         }
 
-        return $this->render('blog/profile.html.twig', ['user' => $user]);
+//        $summrate = $ragingRepository->getUserRatings();
+//        dd($summrate);
+//
+        $array_rating = $user->getGivenRatings()->toArray();
+//        dd($array_rating);
+
+        if ($auth_user_id) {
+            $userGaveARate = $ragingRepository->checkIfUserGaveRating($id, $auth_user_id);
+        } else {
+            $userGaveARate = false;
+        }
+//        dd($userGaveARate);
+
+        $amount_rating = count($array_rating);
+        $rating_sum = 0;
+        array_map(function ($value) use (&$rating_sum, $array_rating) {
+            $rating_sum += $value->getRate();
+//            dump($value->getRate());
+        }, $array_rating);
+
+        if ($amount_rating) {
+            $rating = $rating_sum / $amount_rating;
+        } else {
+            $rating = null;
+        }
+
+//        dd($rating_sum, $amount_rating, $rating, 'Finish');
+
+        return $this->render('blog/profile.html.twig', ['user' => $user, 'rating' => $rating, 'amount_rating' => $amount_rating, 'userGaveARate' => $userGaveARate]);
     }
 
     /**
      * @Route("/edit_profile", name="edit_profile")
      */
-    public function edit_rofile(Request $request, Handler $handler): Response
+    public function edit_profile(Request $request, Handler $handler): Response
     {
         /*
         $options = [];
@@ -138,6 +184,12 @@ class UserController extends AbstractController
             $file_name = $image->getClientOriginalName();
             $post->setImage($file_name);
             $uploader->upload($uploadDir, $image, $file_name);
+        }
+
+        $errors = $validator->validate($post);
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+            return new Response($errorsString);
         }
 
         $entityManager->persist($post);

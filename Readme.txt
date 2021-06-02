@@ -58,6 +58,12 @@ Install dependencies:
 
 // ========================================================
 
+To see every available commands:
+
+    $ php  bin/console
+    or 
+    $ symfony console
+
 Make controller:
 
     $ php bin/console make:controller HomeController
@@ -89,6 +95,10 @@ Create the database table / schema (migration):
 Migrate (to the database):
 
     $ php bin/console doctrine:migrations:migrate
+
+Check migrations:
+
+    $ symfony console doctrine:migrations:list
 
 Query in the command line:
 
@@ -179,3 +189,9 @@ Then add to entity rules, and check it in controller.
 Clear cache:
 
     $ php bin/console cache:clear
+
+// ==========================================
+
+Check global variable:
+
+    $ symfony var:export --multiline

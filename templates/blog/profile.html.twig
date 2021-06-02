@@ -17,9 +17,49 @@
 		{% if user.photo %}
 			<img src="{{ app.request.getSchemeAndHttpHost() ~ '/photo/uploads/' ~ user.photo  }}" style="width: 100%;">
 		{% else %}
+			{% if app.user and app.user.id == user.id %}
 			<h4 style="color: red;">Please add your photo</h4>
+			{% endif %}
 			<img src="{{ app.request.getSchemeAndHttpHost() ~ '/photo/assets/ava_default.jpg' }}" style="width: 100%;">
 		{% endif %}
+
+		{% if rating and amount_rating %}
+			<h3>Rating: {{ rating }}</h3>
+			<p>Rate giving {{ amount_rating }} user</p>
+		{% else %}
+			<h4>No rating</h4>
+		{% endif %}
+
+		{% if app.user and app.user.id != user.id and userGaveARate == false %}
+		<h5>Please give a rating to this user</h5>
+		<form action="{{ path('add_rate') }}" method="POST">
+
+			<input type="hidden" name="user_giver_id" value="{{ app.user.id }}">
+			<input type="hidden" name="user_recepient_id" value="{{ user.id }}">
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="rate" id="inlineRadio1" value="1">
+				<label class="form-check-label" for="inlineRadio1">1</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="rate" id="inlineRadio2" value="2">
+				<label class="form-check-label" for="inlineRadio2">2</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="rate" id="inlineRadio3" value="3">
+				<label class="form-check-label" for="inlineRadio3">3</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="rate" id="inlineRadio4" value="4">
+				<label class="form-check-label" for="inlineRadio4">4</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="rate" id="inlineRadio5" value="5">
+				<label class="form-check-label" for="inlineRadio5">5</label>
+			</div>
+			<input type="submit" name="submit" class="btn btn-primary" value="Submit">
+		</form>
+		{% endif %}
+
 	</div>
 
 	<div class="col-9">
@@ -27,12 +67,19 @@
 		<h3>Phone: {{ user.phone }}</h3>
 		<h3>Email: {{ user.email }}</h3>
 
-		{% if app.user.id ==  user.id %}
+		{% if app.user and app.user.id ==  user.id %}
 			<a href="{{ path('edit_profile') }}"><button type="button" class="btn btn-primary">Edit profile</button></a>
 		{% endif %}
 
-	</div>		
+	</div>	
+
+		
+
 </div>
+
+
+
+
 
 
 {% endblock %}

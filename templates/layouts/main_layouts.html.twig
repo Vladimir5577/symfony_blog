@@ -22,9 +22,9 @@
         {% endif %}
 
         {% if app.user %}
-            <li class="nav-item"><a href="{{ path('add_post') }}" class="nav-link">Add Post</a></li>
-            <li class="nav-item"><a href="{{ path('profile', { id: app.user.getId }) }}" class="nav-link">Profile</a></li>
-            <li class="nav-item"><a href="{{ path('app_logout') }}"><button class="btn btn-danger">Logout</button></a></li>
+            <li class="nav-item"><a href="{{ path('add_post') }}"  class="nav-link"><button class="btn btn-success">Add Post</button></a></li>
+            <li class="nav-item"><a href="{{ path('profile', { id: app.user.getId }) }}" class="nav-link"><button class="btn btn-warning">Profile</button></a></li>
+            <li class="nav-item"><a href="{{ path('app_logout') }}"  class="nav-link"><button class="btn btn-danger">Logout</button></a></li>
         {% endif %}
       </ul>
     </header>

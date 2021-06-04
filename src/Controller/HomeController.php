@@ -6,9 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
+
+use Knp\Component\Pager\PaginatorInterface;
 
 class HomeController extends AbstractController
 {
@@ -25,16 +28,25 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home(): Response
+    public function home(Request $request, PaginatorInterface $paginator): Response
     {
         /** @var Post $posts */
         $posts = $this->getDoctrine()
             ->getRepository(Post::class)
             ->findBy([], ['id' => 'DESC']);
 
+        $pagination = $paginator->paginate(
+            $posts,
+            $request->query->getInt('page', 1),
+            2
+        );
+
 //        dd($posts->getUserId()->getName());
 
-        return $this->render('home/home.html.twig', ['posts' => $posts]);
+        return $this->render('home/home.html.twig', [
+            'posts' => $posts,
+            'pagination' => $pagination,
+        ]);
     }
 
     /**

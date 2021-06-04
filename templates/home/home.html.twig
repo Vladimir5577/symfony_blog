@@ -6,10 +6,15 @@
 
 <h1>Home Page</h1>
 
-<h3>Welcome to our Symfony Blog.</h3>
-<h4>To add a blog you need to register</h4>
+<h3>Amount posts: {{ pagination.getTotalItemCount }}</h3>
 
-{% for post in posts %}
+<h3>Welcome to our Symfony Blog.</h3>
+
+{% if not app.user %}
+	<h4>To add a blog you need to register</h4>
+{% endif %}
+
+{% for post in pagination %}
 	<br>
 	<div class="row">
 		<div class="col-3">
@@ -25,6 +30,8 @@
 	</div>
 	<br>
 {% endfor %}
+
+{{ knp_pagination_render(pagination) }}
 
 
 

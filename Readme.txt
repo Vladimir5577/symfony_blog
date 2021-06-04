@@ -54,6 +54,7 @@ Install dependencies:
 	$ composer require serializer  --- for json
     $ composer require symfony/asset  --- for asset (images, files, ....)
     $ composer require symfony/validator doctrine/annotations   --- validation
+    $ composer require knplabs/knp-paginator-bundle
 
 
 // ========================================================
@@ -67,6 +68,10 @@ To see every available commands:
 Make controller:
 
     $ php bin/console make:controller HomeController
+
+To see autowiring:
+
+    $ php bin/console debug:autowiring
 
 // ========================================================
 

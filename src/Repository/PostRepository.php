@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,9 +18,18 @@ class PostRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
-    } 
+    }
 
+    public function getPosts()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andwhere('p.is_active = :active')
+            ->leftJoin('p.user_id', 'u')
+            ->andWhere('u.is_active = :active')
+            ->setParameter(':active', 1);
 
+        return $qb->getQuery()->execute();
+    }
 
     // /**
     //  * @return Post[] Returns an array of Post objects
@@ -35,7 +45,7 @@ class PostRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-    }
+    }s
     */
 
     /*

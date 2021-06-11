@@ -50,6 +50,16 @@ class Post
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true, options={"default": true})
+     */
+    private $is_active;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
     // validation
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
@@ -78,6 +88,10 @@ class Post
     public function getUserId(): ?User
     {
         return $this->user_id;
+    }
+
+    public function getUserName() {
+        return $this->getUserId()->getName();
     }
 
     public function setUserId(?User $user_id): self
@@ -151,5 +165,37 @@ class Post
         }
 
         return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->is_active;
+    }
+
+    public function setIsActive(?bool $is_active): self
+    {
+        $this->is_active = $is_active;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
     }
 }

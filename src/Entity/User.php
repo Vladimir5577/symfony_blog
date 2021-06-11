@@ -70,6 +70,11 @@ class User implements UserInterface
      */
     private Collection $givenRatings;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true, options={"default": true})
+     */
+    private $is_active;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -283,4 +288,16 @@ class User implements UserInterface
 //
 //        return $this;
 //    }
+
+public function getIsActive(): ?bool
+{
+    return $this->is_active;
+}
+
+public function setIsActive(?bool $is_active): self
+{
+    $this->is_active = $is_active;
+
+    return $this;
+}
 }

@@ -200,3 +200,34 @@ Clear cache:
 Check global variable:
 
     $ symfony var:export --multiline
+
+
+// ==========================================
+
+Admin panel.
+--------------
+
+Install:
+
+    $ symfony composer req "admin:^3"
+
+Make directory for admin controllers:
+
+    $ mkdir src/Controller/Admin/
+
+Create dashboard:
+
+    $ symfony console make:admin:dashboard
+        > then use answers by default
+        it will create /src/Controllers/Admin/DashboardController
+        Then type in the browser /admin --- to open dashboard
+
+Generate CRUD for the entity:
+
+    $ symfony console make:admin:crud
+        choose an entity then answer yes on rest questions
+
+To give an access for user to admin panel --- type in the database roles: ["ROLE_ADMIN"]
+
+// ==========================================
+// ==========================================

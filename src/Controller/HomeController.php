@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -28,12 +29,15 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home(Request $request, PaginatorInterface $paginator): Response
+    public function home(Request $request, PaginatorInterface $paginator, PostRepository $postRepository): Response
     {
         /** @var Post $posts */
-        $posts = $this->getDoctrine()
-            ->getRepository(Post::class)
-            ->findBy([], ['id' => 'DESC']);
+        $posts = $postRepository->getPosts();
+
+
+//        $posts = $this->getDoctrine()
+//            ->getRepository(Post::class)
+//            ->findBy(['is_active' => true], ['id' => 'DESC']);
 
         $pagination = $paginator->paginate(
             $posts,

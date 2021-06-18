@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -29,11 +30,12 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home(Request $request, PaginatorInterface $paginator, PostRepository $postRepository): Response
+    public function home(Request $request, PaginatorInterface $paginator, PostRepository $postRepository, UserRepository $userRepository): Response
     {
-        /** @var Post $posts */
-        $posts = $postRepository->getPosts();
+        $active_users = $userRepository->getActiveUsers();
 
+        /** @var Post $posts */
+        $posts = $postRepository->getPosts($active_users);
 
 //        $posts = $this->getDoctrine()
 //            ->getRepository(Post::class)

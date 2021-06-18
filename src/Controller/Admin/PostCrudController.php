@@ -60,6 +60,10 @@ class PostCrudController extends AbstractCrudController
             TextEditorField::new('description')
                 ->onlyOnForms(),
             BooleanField::new('is_active'),
+//            TextField::new('getCreatedAtString')
+//                ->setLabel('Created at')
+//                ->onlyOnIndex(),
+            DateTimeField::new('created_at')
 
         ];
     }

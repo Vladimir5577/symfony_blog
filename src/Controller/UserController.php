@@ -9,10 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Entity\User;
 use App\Entity\Post;
 use App\Service\FileUploader;
+use App\Service\ImageOptimizer;
 
 class UserController extends AbstractController
 {
@@ -164,14 +167,15 @@ class UserController extends AbstractController
     /**
      * @Route("/save_post", name="save_post")
      */
-    public function save_post(Request $request, ValidatorInterface $validator, string $uploadDir,  FileUploader $uploader): Response
+    public function save_post(Request $request, ValidatorInterface $validator, string $uploadDir,  FileUploader $uploader, ImageOptimizer $imageOptimizer): Response
     {
+//        dd($uploadDir .  $request->files->get('image')->getClientOriginalName());
         $entityManager = $this->getDoctrine()->getManager();
 
         $title = $request->request->get('title');
         $description = $request->request->get('description');
         $image = $request->files->get('image');
-
+//dd($uploadDir . '/' .  $request->files->get('image')->getClientOriginalName());
 //        dd($title, $description, $image);
         $user = $this->getUser();
 
@@ -179,22 +183,43 @@ class UserController extends AbstractController
         $post->setUserId($user);
         $post->setTitle($title);
         $post->setDescription($description);
+        $post->setIsActive(true);
+        $post->setCreatedAt(new \DateTime());
 
         if ($image) {
             $file_name = $image->getClientOriginalName();
             $post->setImage($file_name);
             $uploader->upload($uploadDir, $image, $file_name);
+
+            // resize uploaded file
+            $imageOptimizer->resize($uploadDir . '/' .  $request->files->get('image')->getClientOriginalName());
         }
 
+        // validation
         $errors = $validator->validate($post);
         if (count($errors) > 0) {
-            $errorsString = (string) $errors;
-            return new Response($errorsString);
+//            $errorsString = (string) $errors;
+
+            foreach ($errors as $value) {
+                /** @var ConstraintViolationInterface $value */
+                if ($value->getPropertyPath() == 'title') {
+                    $this->addFlash('title_error', 'Title required!');
+                }
+                if ($value->getPropertyPath() == 'description') {
+                    $this->addFlash('description_error', 'Description required!');
+                }
+                if ($value->getPropertyPath() == 'image') {
+                    $this->addFlash('image_error', 'Image required!');
+                }
+            }
+
+            return $this->redirect('/add_post');
         }
 
         $entityManager->persist($post);
         $entityManager->flush();
 
+        $this->addFlash('success', 'Record created successfully');
         return $this->redirect('/');
     }
 }

@@ -184,6 +184,12 @@ class Post
         return $this->createdAt;
     }
 
+    public function getCreatedAtString(): string
+    {
+        $date = $this->getCreatedAt()->format('Y-m-d H:i:s');
+        return $date;
+    }
+
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;

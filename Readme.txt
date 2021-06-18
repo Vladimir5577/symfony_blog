@@ -49,12 +49,13 @@ Install dependencies:
 
 	$ composer require annotations
 	$ composer require template
-	$ composer require debug  --- debug panel
-	$ composer require make  --- for make command
-	$ composer require serializer  --- for json
-    $ composer require symfony/asset  --- for asset (images, files, ....)
+	$ composer require debug            --- debug panel
+	$ composer require make             --- for make command
+	$ composer require serializer       --- for json
+    $ composer require symfony/asset    --- for asset (images, files, ....)
     $ composer require symfony/validator doctrine/annotations   --- validation
     $ composer require knplabs/knp-paginator-bundle
+    $ symfony composer req "imagine/imagine:^1.2"
 
 
 // ========================================================

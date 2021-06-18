@@ -21,8 +21,8 @@ final class Version20210609084917 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE post ADD created_at DATETIME');
-        $this->addSql('UPDATE post SET created_at=123');
-        $this->addSql('ALTER TABLE post ALTER COLUMN created_at SET NOT NULL');
+//         $this->addSql('UPDATE post SET created_at=123');
+//         $this->addSql('ALTER TABLE post ALTER COLUMN created_at NOT NULL'); // not working
     }
 
     public function down(Schema $schema): void

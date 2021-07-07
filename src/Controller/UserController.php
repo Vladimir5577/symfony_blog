@@ -169,7 +169,7 @@ class UserController extends AbstractController
      */
     public function save_post(Request $request, ValidatorInterface $validator, string $uploadDir,  FileUploader $uploader, ImageOptimizer $imageOptimizer): Response
     {
-//        dd($uploadDir .  $request->files->get('image')->getClientOriginalName());
+       // dd($uploadDir .  $request->files->get('image')->getClientOriginalName());
         $entityManager = $this->getDoctrine()->getManager();
 
         $title = $request->request->get('title');
@@ -187,14 +187,30 @@ class UserController extends AbstractController
         $post->setCreatedAt(new \DateTime());
 
         if ($image) {
+
+            $arr_dir = array_slice(scandir($uploadDir), 2);
+
+            if (empty($arr_dir)) {
+                $uploadDir = $uploadDir . '/1';
+            } else {
+                $new_dir = max($arr_dir) + 1;
+                $uploadDir = $uploadDir . '/' . $new_dir;
+            }
+
+            if ( !file_exists( $uploadDir ) && !is_dir( $uploadDir ) ) {
+                mkdir( $uploadDir );       
+            } 
+
+            // dd($uploadDir);
+
             $file_name = $image->getClientOriginalName();
             $post->setImage($file_name);
             $uploader->upload($uploadDir, $image, $file_name);
 
             // resize uploaded file
-            $imageOptimizer->resize($uploadDir . '/' .  $request->files->get('image')->getClientOriginalName());
+            $imageOptimizer->resize($uploadDir, $file_name);
         }
-
+// dd('Stop');
         // validation
         $errors = $validator->validate($post);
         if (count($errors) > 0) {

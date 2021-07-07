@@ -32,6 +32,7 @@ class HomeController extends AbstractController
      */
     public function home(Request $request, PaginatorInterface $paginator, PostRepository $postRepository, UserRepository $userRepository): Response
     {
+        // dd(234);
         $active_users = $userRepository->getActiveUsers();
 
         /** @var Post $posts */

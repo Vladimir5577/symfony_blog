@@ -81,4 +81,24 @@ class HomeController extends AbstractController
 
         return $this->render('blog/wiev_blog.html.twig', ['post' => $post, 'comments' => $comments]);
     }
+
+    /**
+     * @Route("/send_email")
+     */
+    public function send_email(\Swift_Mailer $mailer)
+    {
+        // dd(354);
+       $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('vladimir160933@gmail.com')
+            ->setTo('cosplayphoto3@gmail.com')
+            ->setBody(
+                'Hello Symfony',
+                'text/html'
+            )
+        ;
+
+        $mailer->send($message);
+
+        return new Response;
+    }
 }

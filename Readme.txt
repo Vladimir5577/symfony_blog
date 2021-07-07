@@ -56,6 +56,7 @@ Install dependencies:
     $ composer require symfony/validator doctrine/annotations   --- validation
     $ composer require knplabs/knp-paginator-bundle
     $ symfony composer req "imagine/imagine:^1.2"
+    $ composer require --dev orm-fixtures
 
 
 // ========================================================

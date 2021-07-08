@@ -27,7 +27,7 @@ class UserFixtures extends Fixture
         $bob_user = new User();
 
         $bob_user->setEmail(self::USER_BOB_ADMIN);
-        $bob_user->setRoles(["bla"]);
+        $bob_user->setRoles(["ROLE_ADMIN"]);
         // encode password
         $encodePassword = $this->encoder->encodePassword($bob_user, 123);
         $bob_user->setPassword($encodePassword);

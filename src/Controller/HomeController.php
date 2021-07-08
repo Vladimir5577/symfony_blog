@@ -44,7 +44,7 @@ class HomeController extends AbstractController
         $pagination = $paginator->paginate(
             $posts,
             $request->query->getInt('page', 1),
-            2
+            3
         );
 
 //        dd($posts->getUserId()->getName());

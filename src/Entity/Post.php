@@ -26,7 +26,7 @@ class Post
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="cascade")
      */
     private $user_id;
 
@@ -51,9 +51,9 @@ class Post
     private $comments;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true, options={"default": true})
+     * @ORM\Column(type="boolean")
      */
-    private $is_active;
+    private $is_active = true;
 
     /**
      * @ORM\Column(type="datetime")

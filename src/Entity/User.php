@@ -71,9 +71,16 @@ class User implements UserInterface
     private Collection $givenRatings;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true, options={"default": true})
+     * @ORM\Column(type="boolean")
      */
-    private $is_active;
+    private $is_active = true;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $created_at;
+
+
 
     public function __construct()
     {
@@ -289,15 +296,27 @@ class User implements UserInterface
 //        return $this;
 //    }
 
-public function getIsActive(): ?bool
-{
-    return $this->is_active;
-}
+    public function getIsActive(): ?bool
+    {
+        return $this->is_active;
+    }
 
-public function setIsActive(?bool $is_active): self
-{
-    $this->is_active = $is_active;
+    public function setIsActive(?bool $is_active): self
+    {
+        $this->is_active = $is_active;
 
-    return $this;
-}
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
 }
